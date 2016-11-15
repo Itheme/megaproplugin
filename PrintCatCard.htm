@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0062)http://www.megaprosoft.ru/MegaPro/Catalog/CatCard/PrintCatCard -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:x="http://www.yandex.ru/xscript" xml:lang="ru"><head xmlns=""><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title></title>
+    <link href="./PrintCatCard_files/jquery-ui-1.9.0.custom.css" rel="stylesheet" type="text/css">
+<script src="./PrintCatCard_files/jquery-1.8.2.js" type="text/javascript"></script>
+<script src="./PrintCatCard_files/jquery-ui-1.9.0.custom.js" type="text/javascript"></script>
+
+    <link href="./PrintCatCard_files/CatCard.css" rel="stylesheet" type="text/css">
+</head>
+<body onload="setPrint()">
+
+<div class="catcard cc-bs">
+<div id="cc-top" class="cc-bs">
+    <div id="cc-top-left" class="cc-bs">3Е<br>Д93</div>
+    <div id="cc-biblio" class="cc-bs">                      <br><b>Дьяков,&nbsp;&nbsp;Максим Васильевич.</b><br>&nbsp;&nbsp;&nbsp;&nbsp;Основы неогранической химии [Текст]&nbsp;&nbsp;: Учебник по неорганической химии / Дьяков&nbsp;&nbsp;Максим Васильевич, Кириллова Ольга Николаевна. - М. : Химия, 1999. - 359 с. : ил. - 0.25.<br>q<br>w<br>w<br>e<br>r<br>t<br>y<br>u<br>i<br>i<br>o<br>o<br><br>hjn<br>drgn<br>egn<br>wrg<br>nw<br>rgn<br>rgn<br>wr<br>gnwrgn</div>
+</div>
+
+<div id="cc-bottom" class="cc-bs">
+
+    <div id="cc-bottom-left" class="cc-bs"></div>
+    <div id="cc-bottom-right" class="cc-bs">ББК 3Е</div>
+</div>
+
+</div>
+
+
+
+<script type="text/javascript">
+    function setPrint()
+    {
+        addCardIfNeeded()
+        //setTimeout(function () { print();}, 5000);
+    }
+</script>
+
+<script type="text/javascript">
+String.prototype.truncate = function(n, ellipsis){
+    var reg = new RegExp("[\\w]*[\\S]+", "g");
+    var result = "";
+    var index = 0; // supposed next index of match in this string
+    while (match = reg.exec(this)) { // enumerating all tokens
+        //console.log(match);
+        //console.log(match.index);
+        var matchLength = match[0].length;
+        if (result.length + matchLength + match.index - index > n - ellipsis.length) {
+            return result + ellipsis;
+        }
+        if (match.index > index) {
+            result += this.substr(index, match.index - index);
+            index = match.index;
+        }
+        index += matchLength;
+        result += match[0];
+    }
+   return this;
+}
+
+    function addCardIfNeeded() {
+        var biblioDiv = document.getElementById('cc-biblio');//$("cc-biblio")
+        //var positionInfo = biblioDiv.getBoundingClientRect();
+        //console.log(positionInfo)
+        if (biblioDiv.clientHeight < biblioDiv.scrollHeight) {
+            var text = biblioDiv.innerHTML;//.replace(/&nbsp;/gi, " ");
+            var splitPoint = text.length / 2;
+            var ellipsis = ' <i>(Продолжение на следующей карточке)</i>';
+            var firstCardText = text.truncate(splitPoint, ellipsis);
+            splitPoint = firstCardText.length - ellipsis.length;
+            var secondCardText = text.substr(splitPoint, text.length - splitPoint);
+            
+            biblioDiv.innerHTML = firstCardText;
+            var divCopyTop = document.getElementById('cc-top-left').innerHTML;
+            var divCopyBottomLeft = document.getElementById('cc-bottom-left').innerHTML;
+            var divCopyBottomRight = document.getElementById('cc-bottom-right').innerHTML;
+            var addedCardText = '<br>'
+            addedCardText += '<div class="catcard cc-bs">';
+            addedCardText += '    <div id="cc-top" class="cc-bs">';
+            addedCardText += '        <div id="cc-top-left" class="cc-bs">'
+            addedCardText += divCopyTop;
+            addedCardText += '        </div>';
+            addedCardText += '        <div id="cc-biblio" class="cc-bs">';
+            addedCardText += secondCardText;
+            addedCardText += '        </div>';
+            addedCardText += '    </div>';
+            addedCardText += '    <div id="cc-bottom" class="cc-bs">';
+            addedCardText += '        <div id="cc-bottom-left" class="cc-bs">';
+            addedCardText += divCopyBottomLeft;
+            addedCardText += '        </div>';
+            addedCardText += '        <div id="cc-bottom-right" class="cc-bs">';
+            addedCardText += divCopyBottomRight;
+            addedCardText += '        </div>';
+            addedCardText += '    </div>';
+            addedCardText += '</div>';
+            document.body.innerHTML += addedCardText;
+        }
+        //console.log(biblioDiv.clientHeight);
+        //console.log(biblioDiv.scrollHeight);
+        //console.log(biblioDiv.innerHTML);
+    }
+</script>
+
+</body></html>
