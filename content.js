@@ -1,7 +1,15 @@
-var addedStyle = "border: 1px solid #000000;";
-var ellipsis = '<br><i>см. след. карт.</i>';
+var addedStyle = "";//"border: 1px solid #000000;";
+var ellipsis = '<span style="float:right;"><i>см. след. карт.</i></span>';
 var secondCardPrefix = '<p align="center">- 2 -</p>';
+var addedCardText = '';
 
+
+var buttonScript = "document.body.innerHTML = localStorage.getItem('addedCardText');setTimeout(function () { print();}, 2000);";
+var addedButton = '<button onclick="'+buttonScript+'">Следующая карточка...</button>';
+
+
+// retrieve data value
+var name = localStorage.getItem("name");
 
 String.prototype.truncate = function(n, ellipsis){
     var reg = new RegExp("[\\w]*[\\S]+", "g");
@@ -43,7 +51,7 @@ String.prototype.truncate = function(n, ellipsis){
             var divCopyTop = document.getElementById('cc-top-left').innerHTML;
             var divCopyBottomLeft = document.getElementById('cc-bottom-left').innerHTML;
             var divCopyBottomRight = document.getElementById('cc-bottom-right').innerHTML;
-            var addedCardText = '<br><br>'
+            document.body.innerHTML += addedButton;
             addedCardText += '<div class="catcard cc-bs" style="' + addedStyle + '">';
             addedCardText += '    <div id="cc-top" class="cc-bs">';
             addedCardText += '        <div id="cc-top-left" class="cc-bs">'
@@ -61,14 +69,22 @@ String.prototype.truncate = function(n, ellipsis){
             addedCardText += divCopyBottomRight;
             addedCardText += '        </div>';
             addedCardText += '    </div>';
-            addedCardText += '</div>';
-            document.body.innerHTML += addedCardText;
+            addedCardText += '</div>'
+            localStorage.setItem('addedCardText', addedCardText);
         }
+    }
+    
+    function switchCard() {
+        var addedCardText = localStorage.getItem('addedCardText')
+        if (addedCardText == null) {
+            addedCardText = "";
+        }
+        document.body.innerHTML = addedCardText;
+        setTimeout(function () { print();}, 2000);
     }
 
     function addBackCardIfNeeded() {
         var biblioDiv = document.getElementById('backcard');
-        console.log(biblioDiv);
         if (biblioDiv == null) return false;
         if (biblioDiv.clientHeight < biblioDiv.scrollHeight) {
             var text = biblioDiv.innerHTML;//.replace(/&nbsp;/gi, " ");
@@ -79,11 +95,12 @@ String.prototype.truncate = function(n, ellipsis){
             
             biblioDiv.innerHTML = firstCardText;
             biblioDiv.style.cssText += addedStyle;
-            var addedCardText = '<br><br>'
             addedCardText += '<div class="catcard" style="' + addedStyle + '">';
             addedCardText += secondCardText;
             addedCardText += '</div>';
-            document.body.innerHTML += addedCardText;
+            localStorage.setItem('addedCardText', addedCardText);
+
+            document.body.innerHTML += addedButton;
             return true;
         }
         return false;

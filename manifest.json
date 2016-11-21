@@ -1,14 +1,14 @@
 {
   "manifest_version": 2,
   "name": "Megapro card adder",
-  "version": "0.2",
+  "version": "0.3",
 "content_scripts": [
   {
     "matches": [
       "http://*/*/PrintCatCard",
       "http://*/*/PrintBackCard"
     ],
-    "js": ["jquery-3.1.1.js","content.js"]
+    "js": ["jquery-3.1.1.js", "content.js"]
   }
 ]
 
